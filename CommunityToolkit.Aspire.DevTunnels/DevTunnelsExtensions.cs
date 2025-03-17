@@ -9,16 +9,10 @@ using System.Text.RegularExpressions;
 
 namespace CommunityToolkit.Aspire.DevTunnels;
 
-public class DevTunnelsResource : IResource
-{
-    public string Name => "Dev Tunnels";
-
-    public ResourceAnnotationCollection Annotations { get; set; } = [];
-}
-
 public static class DevTunnelsExtensions
 {
-    // TODO: this right now is very much tailored towards how I want to use if for .NET MAUI and is hacked together, but its a start
+    // TODO: this right now is very much tailored towards how I want to use it for .NET MAUI and is hacked together,
+    // but its a start of how a Community Toolkit integration could look like
     public async static Task<TBuilder> AddDevTunnels<TBuilder>(this TBuilder builder) where TBuilder : IDistributedApplicationBuilder
     {
         // Create a tunnel management client
@@ -71,7 +65,7 @@ public static class DevTunnelsExtensions
             }
         }
 
-        // Collect all the ports from the environment variables
+        // Collect all the ports from the environment variables that we want to tunnel as well
         var variablesToInclude = new HashSet<string>
         {
             "DOTNET_DASHBOARD_OTLP_ENDPOINT_URL",
@@ -88,18 +82,20 @@ public static class DevTunnelsExtensions
                 var values = value?.Split(';') ?? [];
                 foreach (var val in values)
                 {
-                    var uri = new Uri(val);
-                    portsToOpen.Add(new TunnelPort
+                    if (Uri.TryCreate(val, UriKind.Absolute, out var uri))
                     {
-                        Name = variable,
-                        PortNumber = (ushort)uri.Port,
-                        Protocol = uri.Scheme.ToLowerInvariant()
-                    });
+                        portsToOpen.Add(new TunnelPort
+                        {
+                            Name = variable,
+                            PortNumber = (ushort)uri.Port,
+                            Protocol = uri.Scheme.ToLowerInvariant()
+                        });
+                    }
                 }
             }
         }
 
-        tunnel.Ports = portsToOpen.ToArray();
+        tunnel.Ports = [.. portsToOpen];
 
         tunnel = await tunnelManagementClient.CreateOrUpdateTunnelAsync(tunnel, null, CancellationToken.None);
 
