@@ -43,6 +43,8 @@ You will need to run all of the below with Visual Studio 17.12+ on Windows for t
   builder.AddProject<Projects.MauiAspire>("mauiapp")
       .WithReference(webapi);
 
+  await builder.WithDevTunnels();
+
   // This was probably already there
   builder.Build().Run();
   ```
@@ -62,19 +64,7 @@ You will need to run all of the below with Visual Studio 17.12+ on Windows for t
 * Go into the .NET Aspire AppHost project's **launchSettings.json** file and note the port number for [`DOTNET_DASHBOARD_OTLP_ENDPOINT_URL`](https://github.com/jfversluis/MauiAspire/blob/main/MauiAspire.AppHost/Properties/launchSettings.json#L13) (for example 21104)
 * Go into the Web API [**launchSettings.json**](https://github.com/jfversluis/MauiAspire/blob/main/SampleWebApi/Properties/launchSettings.json#L17) file and note the port number of the application. (for example 7291)
   * In this example I assume we're only using the https one. The http endpoint should work as well, you will need to note this port too and add it to the Dev Tunnel command a little later.
-* Make sure Dev Tunnels is installed: https://learn.microsoft.com/azure/developer/dev-tunnels/get-started
-* Manually start a Dev Tunnel, for example: `devtunnel host --allow-anonymous --protocol https -p 21104 -p 7291` note the Dev Tunnel ID. For example, if the resulting URL is `https://lgtm1234-7291.euw.devtunnels.ms`, the ID is `lgtm1234`
-* Make sure to click the link and open each endpoint (shown in the console output) in the browser. You will need to manually accept once for each endpoint, to allow traffic to go through the tunnel.
-* With the Dev Tunnel ID go back to the **launchSettings.json** file of the AppHost project and add a new entry under `EnvironmentVariables`: add [`DEVTUNNEL_ID`](https://github.com/jfversluis/MauiAspire/blob/main/MauiAspire.AppHost/Properties/launchSettings.json#L14) with the ID you just got from the Dev Tunnel:
-  ```json 
-  "environmentVariables": {
-    "ASPNETCORE_ENVIRONMENT": "Development",
-    "DOTNET_ENVIRONMENT": "Development",
-    "DOTNET_DASHBOARD_OTLP_ENDPOINT_URL": "https://localhost:21014",
-    "DOTNET_RESOURCE_SERVICE_ENDPOINT_URL": "https://localhost:22279",
-    "DEVTUNNEL_ID": "lgtm1234"
-  }
-  ```
+* Make sure Dev Tunnels is installed: https://learn.microsoft.com/azure/developer/dev-tunnels/get-started and you are logged in
 * Consume your registered service/HttpClient in your .NET MAUI app
 * Set the AppHost project as the startup project, click the run button and all should light up and you should see all data in the .NET Aspire dashboard!
 
@@ -115,6 +105,8 @@ You will need to run all of the below with Visual Studio 17.12+ on Windows for t
   builder.AddProject<Projects.MauiAspire>("mauiapp")
       .WithReference(webapi);
 
+  await builder.WithDevTunnels();
+
   // This was probably already there
   builder.Build().Run();
   ```
@@ -134,18 +126,6 @@ You will need to run all of the below with Visual Studio 17.12+ on Windows for t
 * Go into the .NET Aspire AppHost project's **launchSettings.json** file and note the port number for [`DOTNET_DASHBOARD_OTLP_ENDPOINT_URL`](https://github.com/jfversluis/MauiAspire/blob/main/MauiAspire.AppHost/Properties/launchSettings.json#L13) (for example 21104)
 * Go into the Web API [**launchSettings.json**](https://github.com/jfversluis/MauiAspire/blob/main/SampleWebApi/Properties/launchSettings.json#L17) file and note the port number of the application. (for example 7291)
   * In this example I assume we're only using the https one. The http endpoint should work as well, you will need to note this port too and add it to the Dev Tunnel command a little later.
-* Make sure Dev Tunnels is installed: https://learn.microsoft.com/azure/developer/dev-tunnels/get-started
-* Manually start a Dev Tunnel, for example: `devtunnel host --allow-anonymous --protocol https -p 21104 -p 7291` note the Dev Tunnel ID. For example, if the resulting URL is `https://lgtm1234-7291.euw.devtunnels.ms`, the ID is `lgtm1234`
-* Make sure to click the link and open each endpoint (shown in the console output) in the browser. You will need to manually accept once for each endpoint, to allow traffic to go through the tunnel.
-* With the Dev Tunnel ID go back to the **launchSettings.json** file of the AppHost project and add a new entry under `EnvironmentVariables`: add [`DEVTUNNEL_ID`](https://github.com/jfversluis/MauiAspire/blob/main/MauiAspire.AppHost/Properties/launchSettings.json#L14) with the ID you just got from the Dev Tunnel:
-  ```json 
-  "environmentVariables": {
-    "ASPNETCORE_ENVIRONMENT": "Development",
-    "DOTNET_ENVIRONMENT": "Development",
-    "DOTNET_DASHBOARD_OTLP_ENDPOINT_URL": "https://localhost:21014",
-    "DOTNET_RESOURCE_SERVICE_ENDPOINT_URL": "https://localhost:22279",
-    "DEVTUNNEL_ID": "lgtm1234"
-  }
-  ```
+* Make sure Dev Tunnels is installed: https://learn.microsoft.com/azure/developer/dev-tunnels/get-started and you are logged in
 * Consume your registered service/HttpClient in your .NET MAUI app
 * Set the AppHost project as the startup project, click the run button and all should light up and you should see all data in the .NET Aspire dashboard!
