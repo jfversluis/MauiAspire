@@ -6,7 +6,7 @@ You can either pull down this repository which should be a self-contained sample
 
 ## Prerequisites
 
-You will need to run all of the below with Visual Studio 17.12+ on Windows for the time being
+You will need to run all of the below with Visual Studio 17.13+ on Windows for the time being
 
 ## Applying to your existing .NET MAUI project
 
