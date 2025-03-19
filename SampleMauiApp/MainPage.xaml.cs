@@ -1,4 +1,4 @@
-﻿namespace MauiAspire;
+﻿namespace SampleMauiApp;
 
 public partial class MainPage : ContentPage
 {

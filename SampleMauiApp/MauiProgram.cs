@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace MauiAspire
+namespace SampleMauiApp
 {
     public static class MauiProgram
     {

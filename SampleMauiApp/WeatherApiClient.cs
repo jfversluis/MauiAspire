@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Json;
 
-namespace MauiAspire;
+namespace SampleMauiApp;
 
 public class WeatherApiClient(HttpClient httpClient)
 {

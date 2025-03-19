@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.35806.103
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiAspire", "MauiAspire\MauiAspire.csproj", "{8DC5A43D-1A5A-4BA8-A99A-880D1FD02CE5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleMauiApp", "SampleMauiApp\SampleMauiApp.csproj", "{8DC5A43D-1A5A-4BA8-A99A-880D1FD02CE5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiAspire.AppHost", "MauiAspire.AppHost\MauiAspire.AppHost.csproj", "{5E328F4D-BB5F-45C5-8435-F62779DB9817}"
 EndProject
@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiAspire.ServiceDefaults"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebApi", "SampleWebApi\SampleWebApi.csproj", "{73FE628E-4071-13A7-FAEF-03256A4C279F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maui.ServiceDefaults", "MauiApp.ServiceDefaults\Maui.ServiceDefaults.csproj", "{C3DC0DED-9EA7-4FA4-ABF6-E1011DC309AE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiApp.ServiceDefaults", "MauiApp.ServiceDefaults\MauiApp.ServiceDefaults.csproj", "{C3DC0DED-9EA7-4FA4-ABF6-E1011DC309AE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunityToolkit.Aspire.DevTunnels", "CommunityToolkit.Aspire.DevTunnels\CommunityToolkit.Aspire.DevTunnels.csproj", "{72EF8122-603C-4985-B309-4C11369E5959}"
 EndProject

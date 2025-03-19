@@ -4,7 +4,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var webapi = builder.AddProject<Projects.SampleWebApi>("webapi");
 
-builder.AddProject<Projects.MauiAspire>("mauiapp")
+builder.AddProject<Projects.SampleMauiApp>("mauiapp")
     .WithReference(webapi);
 
 await builder.AddDevTunnels();

@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CommunityToolkit.Aspire.DevTunnels\CommunityToolkit.Aspire.DevTunnels.csproj" IsAspireProjectResource="false" />
-    <ProjectReference Include="..\MauiAspire\MauiAspire.csproj" />
+    <ProjectReference Include="..\SampleMauiApp\SampleMauiApp.csproj" />
     <ProjectReference Include="..\SampleWebApi\SampleWebApi.csproj" />
   </ItemGroup>
 
