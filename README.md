@@ -4,6 +4,8 @@ This repository serves as a proof-of-concept for what a .NET MAUI integration wi
 
 You can either pull down this repository which should be a self-contained sample that you can play with. Additionally, you can try to apply this to an existing .NET MAUI project that you may want to try this on. See the steps for that below.
 
+If you want to learn more, please check out [this video](https://youtu.be/RCIM6qagZ-U).
+
 ## Prerequisites
 
 You will need to run all of the below with Visual Studio 17.13+ on Windows for the time being
