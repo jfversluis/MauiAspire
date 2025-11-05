@@ -1,63 +1,302 @@
-# .NET MAUI <3 .NET Aspire
+# .NET MAUI ❤️ .NET Aspire
 
-This repository serves as a proof-of-concept for what a .NET MAUI integration with .NET Aspire would look like.
+This repository demonstrates the integration between .NET MAUI and .NET Aspire, showcasing how Aspire simplifies connecting mobile and desktop applications to local web services during development.
 
-You can either pull down this repository which should be a self-contained sample that you can play with. Additionally, you can try to apply this to an existing .NET MAUI project that you may want to try this on. See the steps for that below.
+## What is .NET Aspire?
 
-If you want to learn more, please check out [this video](https://youtu.be/RCIM6qagZ-U).
+.NET Aspire provides a consistent, opinionated set of tools and patterns for building and running distributed applications. It's designed to improve the experience of building cloud-native applications by providing:
+
+- **Orchestration**: Simplified management of multiple services and dependencies
+- **Components**: Pre-built integrations for common services and platforms
+- **Tooling**: Developer dashboard for monitoring and managing services
+- **Service discovery**: Automatic configuration for service-to-service communication
+
+## Why Use Aspire with .NET MAUI?
+
+Integrating Aspire with your .NET MAUI applications provides several key benefits:
+
+- **Simplified configuration**: Eliminate complex platform-specific networking configuration. No need to manually handle `10.0.2.2` for Android or deal with certificate validation issues.
+- **Automatic service discovery**: Your MAUI app automatically discovers and connects to local services without hardcoded URLs.
+- **Development tunnels integration**: Built-in support for Dev Tunnels on iOS and Android, making it easy to connect mobile emulators and simulators to local services.
+- **Consistent experience**: Use the same patterns and tools across your entire application stack.
+- **Observable services**: Monitor your services through the Aspire dashboard during development.
+
+## Platform Support
+
+> [!NOTE]
+> Aspire 13 currently has full support for **Windows** and **Mac Catalyst**. Support for **Android** and **iOS** is coming in a future release.
 
 ## Prerequisites
 
-You will need to run all of the below with Visual Studio 17.13+ on Windows for the time being.
+To use this sample or integrate Aspire with your own .NET MAUI project, you need:
 
-## Applying to your existing .NET MAUI project
+- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) or later
+- [.NET MAUI workload](https://learn.microsoft.com/dotnet/maui/get-started/installation) installed
 
-* Make sure you are using `Microsoft.Maui.Controls` .NET 10 preview 4+
-* Add .NET Aspire App Host project to your solution
-* Add .NET MAUI app project reference to .NET Aspire App Host project, see [here](https://github.com/jfversluis/MauiAspire/blob/main/MauiAspire.AppHost/MauiAspire.AppHost.csproj#L19) in this sample project.
-* Add your .NET MAUI app to the .NET Aspire App Host [**Program.cs**](https://github.com/jfversluis/MauiAspire/blob/main/MauiAspire.AppHost/Program.cs) and add any references to services that you want to consume in your .NET MAUI app. For example:
-  ```csharp
-  // This was probably already there
-  var builder = DistributedApplication.CreateBuilder(args);
+## What's in This Sample?
 
-  // This is a service you want to call from your .NET MAUI app and/or other projects
-  var webapi = builder.AddProject<Projects.SampleWebApi>("webapi");
+This repository contains a complete working example with:
 
-  // This registers your .NET MAUI app and adds a reference to the Web API you want to call
-  builder.AddProject<Projects.MauiAspire>("mauiapp")
-      .WithReference(webapi);
+- **SampleMauiApp**: A .NET MAUI application that consumes a weather API
+- **SampleWebApi**: An ASP.NET Core Web API providing weather data
+- **MauiApp.ServiceDefaults**: Service defaults configuration for the MAUI app
+- **MauiAspire.ServiceDefaults**: Service defaults configuration for the web API
+- **MauiAspire.AppHost**: The Aspire App Host that orchestrates all services
 
-  // This was probably already there
-  builder.Build().Run();
-  ```
-* Add .NET MAUI ServiceDefaults project to the solution
-  * This is a new template in .NET 10 preview 4+ (`dotnet new maui-aspire-servicedefaults`), or take it from: https://github.com/jfversluis/MauiAspire/tree/main/MauiApp.ServiceDefaults
-* Add a [reference](https://github.com/jfversluis/MauiAspire/blob/main/SampleMauiApp/SampleMauiApp.csproj#L77) to the .NET MAUI ServiceDefaults project in your .NET MAUI app
-* Go into your [**MauiProgram.cs**](https://github.com/jfversluis/MauiAspire/blob/main/MauiAspire/MauiProgram.cs#L19) in your .NET MAUI project and add `builder.AddServiceDefaults();` also make sure to add `using Microsoft.Extensions.Hosting;` in the top of your file.
-* Start registering your services/HttpClient instances, for example (of course make sure that your service discovery endpoints match, in this case `webapi` must match how your Web API is registered in the .NET Aspire AppHost project), see [here](https://github.com/jfversluis/MauiAspire/blob/main/SampleMauiApp/MauiProgram.cs#L21-L26) in this sample project:
-  ```csharp
-  builder.Services.AddHttpClient<WeatherApiClient>(client =>
-  {
-      // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
-      // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
-      client.BaseAddress = new("https+http://webapi");
-  });
-  ```
-* Go into the .NET Aspire AppHost project's **launchSettings.json** file and note the port number for [`DOTNET_DASHBOARD_OTLP_ENDPOINT_URL`](https://github.com/jfversluis/MauiAspire/blob/main/MauiAspire.AppHost/Properties/launchSettings.json#L13) (for example 21104)
-* Go into the Web API [**launchSettings.json**](https://github.com/jfversluis/MauiAspire/blob/main/SampleWebApi/Properties/launchSettings.json#L17) file and note the port number of the application. (for example 7291)
-  * In this example I assume we're only using the https one. The http endpoint should work as well, you will need to note this port too and add it to the Dev Tunnel command a little later.
-* Make sure Dev Tunnels is installed: https://learn.microsoft.com/azure/developer/dev-tunnels/get-started
-* Manually start a Dev Tunnel, for example: `devtunnel host --allow-anonymous --protocol https -p 21104 -p 7291` note the Dev Tunnel ID. For example, if the resulting URL is `https://lgtm1234-7291.euw.devtunnels.ms`, the ID is `lgtm1234`
-* Make sure to click the link and open each endpoint (shown in the console output) in the browser. You will need to manually accept once for each endpoint, to allow traffic to go through the tunnel.
-* With the Dev Tunnel ID go back to the **launchSettings.json** file of the AppHost project and add a new entry under `EnvironmentVariables`: add [`DEVTUNNEL_ID`](https://github.com/jfversluis/MauiAspire/blob/main/MauiAspire.AppHost/Properties/launchSettings.json#L14) with the ID you just got from the Dev Tunnel:
-  ```json 
-  "environmentVariables": {
-    "ASPNETCORE_ENVIRONMENT": "Development",
-    "DOTNET_ENVIRONMENT": "Development",
-    "DOTNET_DASHBOARD_OTLP_ENDPOINT_URL": "https://localhost:21014",
-    "DOTNET_RESOURCE_SERVICE_ENDPOINT_URL": "https://localhost:22279",
-    "DEVTUNNEL_ID": "lgtm1234"
-  }
-  ```
-* Consume your registered service/HttpClient in your .NET MAUI app
-* Set the AppHost project as the startup project, click the run button and all should light up and you should see all data in the .NET Aspire dashboard!
+## Getting Started
+
+### Running This Sample
+
+1. Clone this repository
+2. Open the solution in your preferred IDE or editor
+3. Run the App Host project:
+   - **Visual Studio**: Set `MauiAspire.AppHost` as the startup project and press F5
+   - **VS Code**: Open the AppHost folder and run/debug the project
+   - **Command line**: Navigate to the `MauiAspire.AppHost` directory and run `dotnet run` or `aspire run`
+4. The Aspire dashboard will open, showing all registered services
+5. Your MAUI app will launch and automatically connect to the weather API
+
+## Applying Aspire to Your Existing .NET MAUI Project
+
+Follow these steps to add Aspire integration to your own .NET MAUI application:
+
+### 1. Update Your .NET MAUI Project
+
+Ensure your .NET MAUI app is using:
+- `Microsoft.Maui.Controls` .NET 10 RC2 or later
+- Target framework: `net10.0` or later
+
+### 2. Create the MAUI Service Defaults Project
+
+The MAUI Service Defaults project contains shared configuration for service discovery, telemetry, and resilience patterns.
+
+```bash
+dotnet new maui-aspire-servicedefaults -n YourApp.MauiServiceDefaults
+```
+
+Add a reference from your MAUI app to the Service Defaults project:
+
+```bash
+dotnet add YourMauiApp.csproj reference YourApp.MauiServiceDefaults/YourApp.MauiServiceDefaults.csproj
+```
+
+> [!TIP]
+> To enable detailed metrics and tracing from the .NET MAUI SDK, open the `Extensions.cs` file in your MAUI Service Defaults project and uncomment the lines that add `Microsoft.Maui` as a meter and tracing source. Note that this may generate a significant amount of telemetry data.
+
+### 3. Create the Aspire App Host Project
+
+The App Host project orchestrates all your application services.
+
+```bash
+dotnet new aspire-apphost -n YourApp.AppHost
+```
+
+Add references to your MAUI app and web service projects:
+
+```bash
+dotnet add YourApp.AppHost.csproj reference YourWebService/YourWebService.csproj
+```
+
+> [!NOTE]
+> Unlike traditional project references, MAUI projects are added using the `AddMauiProject` method in code (see next step), not as a project reference in the `.csproj` file.
+
+### 4. Configure the App Host
+
+In your App Host project's `AppHost.cs` or `Program.cs`, register your services and MAUI app:
+
+```csharp
+var builder = DistributedApplication.CreateBuilder(args);
+
+// Register your web service
+var webapi = builder.AddProject<Projects.SampleWebApi>("webapi");
+
+// Register your MAUI app using the path to the .csproj file
+var mauiapp = builder.AddMauiProject("mauiapp", "../YourMauiApp/YourMauiApp.csproj");
+
+// Add Windows device (uses localhost directly)
+mauiapp.AddWindowsDevice()
+    .WithReference(webapi);
+
+// Add Mac Catalyst device (uses localhost directly)
+mauiapp.AddMacCatalystDevice()
+    .WithReference(webapi);
+
+// Coming soon: iOS and Android support
+// mauiapp.AddiOSSimulator()
+//     .WithOtlpDevTunnel()
+//     .WithReference(webapi, publicDevTunnel);
+
+builder.Build().Run();
+```
+
+### 5. Configure Your MAUI App
+
+In your MAUI app's `MauiProgram.cs`, add service defaults and configure HTTP clients:
+
+```csharp
+using Microsoft.Extensions.Hosting;
+
+public static class MauiProgram
+{
+    public static MauiApp CreateMauiApp()
+    {
+        var builder = MauiApp.CreateBuilder();
+        
+        builder
+            .UseMauiApp<App>()
+            .ConfigureFonts(fonts =>
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+            });
+
+        // Add service defaults - this enables service discovery and telemetry
+        builder.AddServiceDefaults();
+
+        // Configure HTTP client with service discovery
+        builder.Services.AddHttpClient<WeatherApiClient>(client =>
+        {
+            // Service name must match the name used in App Host
+            // The https+http:// scheme prefers HTTPS but falls back to HTTP
+            client.BaseAddress = new Uri("https+http://webapi");
+        });
+
+        return builder.Build();
+    }
+}
+```
+
+### 6. Create a Service Client
+
+Create a typed client to consume your web service:
+
+```csharp
+public class WeatherApiClient
+{
+    private readonly HttpClient _httpClient;
+
+    public WeatherApiClient(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+    }
+
+    public async Task<WeatherForecast[]?> GetWeatherForecastAsync(
+        CancellationToken cancellationToken = default)
+    {
+        return await _httpClient.GetFromJsonAsync<WeatherForecast[]>(
+            "/weatherforecast",
+            cancellationToken);
+    }
+}
+```
+
+### 7. Use the Client in Your App
+
+Inject and use the client in your pages or view models:
+
+```csharp
+public partial class MainPage : ContentPage
+{
+    private readonly WeatherApiClient _weatherClient;
+
+    public MainPage(WeatherApiClient weatherClient)
+    {
+        _weatherClient = weatherClient;
+        InitializeComponent();
+    }
+
+    private async void OnGetWeatherClicked(object sender, EventArgs e)
+    {
+        try
+        {
+            var forecasts = await _weatherClient.GetWeatherForecastAsync();
+            
+            if (forecasts != null)
+            {
+                // Display the weather data
+                ResultLabel.Text = $"Retrieved {forecasts.Length} forecasts";
+            }
+        }
+        catch (Exception ex)
+        {
+            ResultLabel.Text = $"Error: {ex.Message}";
+        }
+    }
+}
+```
+
+### 8. Run Your Application
+
+Run the App Host project using your preferred method:
+- **Visual Studio**: Set the App Host project as the startup project and press F5
+- **VS Code**: Open the AppHost folder and run/debug the project
+- **Command line**: Navigate to the App Host directory and run `dotnet run` or `aspire run`
+
+When running:
+1. The Aspire dashboard will open at `https://localhost:[port]`
+2. Your MAUI app will launch and connect to services automatically
+3. Monitor logs, traces, and metrics in the Aspire dashboard
+
+## Platform-Specific Considerations
+
+### Windows and Mac Catalyst
+
+On Windows and Mac Catalyst, the Aspire integration works seamlessly using localhost. Service discovery automatically provides the correct URLs for connecting to local services.
+
+### iOS and Android (Coming Soon)
+
+Support for iOS and Android is coming in a future Aspire release. When available, Dev Tunnels will be automatically configured to enable connectivity between mobile emulators/devices and services running on your development machine.
+
+## Features Demonstrated
+
+This sample showcases:
+
+- ✅ Complete project structure for Aspire + MAUI
+- ✅ Service registration and discovery
+- ✅ HTTP client configuration with service discovery
+- ✅ Telemetry and monitoring through the Aspire dashboard
+- ✅ Windows and Mac Catalyst platform support
+- ✅ Error handling and resilience patterns
+
+## Troubleshooting
+
+### Service Discovery Not Working
+
+If your MAUI app can't connect to services:
+
+1. Verify `AddServiceDefaults()` is called in `MauiProgram.cs`
+2. Ensure the service name in your HTTP client matches the App Host registration
+3. Check that you're using the `https+http://` scheme
+4. Verify all projects build successfully
+
+### App Host Won't Start
+
+If the App Host fails to start:
+
+1. Ensure all project paths in `AppHost.cs` are correct
+2. Verify .NET 10 SDK and Aspire workload are installed
+3. Check the App Host console output for error messages
+4. Ensure your web service projects target a compatible framework
+
+### MAUI App Can't Find Service Defaults
+
+If you see errors about missing service defaults:
+
+1. Verify the Service Defaults project reference in your MAUI `.csproj`
+2. Ensure the Service Defaults project builds successfully
+3. Clean and rebuild the solution
+
+## Additional Resources
+
+- [Official .NET Aspire Documentation](https://learn.microsoft.com/dotnet/aspire/)
+- [.NET MAUI Documentation](https://learn.microsoft.com/dotnet/maui/)
+- [Service Discovery in Aspire](https://learn.microsoft.com/dotnet/aspire/service-discovery/overview)
+- [Aspire App Host Overview](https://learn.microsoft.com/dotnet/aspire/fundamentals/app-host-overview)
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit issues or pull requests.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
