@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SampleMauiApp.Services;
 
 namespace SampleMauiApp
 {
@@ -16,9 +17,15 @@ namespace SampleMauiApp
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            // Add service defaults & Aspire components.
             builder.AddServiceDefaults();
 
-            builder.Services.AddHttpClient<WeatherApiClient>(client =>
+            // Register services
+            builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddSingleton<IWeatherService, WeatherService>();
+
+            // Configure HTTP client for weather API
+            builder.Services.AddHttpClient<IWeatherService, WeatherService>(client =>
             {
                 // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
                 // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
@@ -29,9 +36,7 @@ namespace SampleMauiApp
             builder.Logging.AddDebug();
 #endif
             
-            var app = builder.Build();
-
-            return app;
+            return builder.Build();
         }
     }
 }

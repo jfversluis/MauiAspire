@@ -1,20 +1,47 @@
-﻿namespace SampleMauiApp;
+﻿using System.Collections.ObjectModel;
+using SampleMauiApp.Services;
+
+namespace SampleMauiApp;
 
 public partial class MainPage : ContentPage
 {
-    private readonly WeatherApiClient _weatherApiClient;
+    private readonly IWeatherService _weatherService;
+    public ObservableCollection<WeatherForecast> WeatherData { get; set; } = new();
 
-    public MainPage(WeatherApiClient weatherApiClient)
+    public MainPage(IWeatherService weatherService)
     {
+        _weatherService = weatherService;
         InitializeComponent();
-
-        _weatherApiClient = weatherApiClient;
+        BindingContext = this;
     }
 
     private async void OnCounterClicked(object sender, EventArgs e)
     {
-        var weather = await _weatherApiClient.GetWeatherAsync();
+        try
+        {
+            StatusLabel.Text = "Loading weather data...";
+            LoadWeatherBtn.IsEnabled = false;
 
-        CounterBtn.Text = $"{weather[0].Summary}";
+            var weatherData = await _weatherService.GetWeatherForecastAsync();
+
+            WeatherData.Clear();
+            foreach (var item in weatherData)
+            {
+                WeatherData.Add(item);
+            }
+
+            StatusLabel.Text = weatherData.Length > 0
+                ? $"Loaded {weatherData.Length} weather forecasts"
+                : "No weather data available";
+        }
+        catch (Exception ex)
+        {
+            StatusLabel.Text = $"Error: {ex.Message}";
+        }
+        finally
+        {
+            LoadWeatherBtn.IsEnabled = true;
+        }
     }
 }
+
