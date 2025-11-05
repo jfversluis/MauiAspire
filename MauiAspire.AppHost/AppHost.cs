@@ -10,4 +10,12 @@ mauiapp.AddWindowsDevice()
 mauiapp.AddMacCatalystDevice()
     .WithReference(webapi);
 
+var blazorhybridapp = builder.AddMauiProject("blazorhybridapp", "../SampleBlazorHybridApp/SampleBlazorHybridApp.csproj");
+
+blazorhybridapp.AddWindowsDevice()
+    .WithReference(webapi);
+
+blazorhybridapp.AddMacCatalystDevice()
+    .WithReference(webapi);
+
 builder.Build().Run();
