@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleBlazorHybridApp", "SampleBlazorHybridApp\SampleBlazorHybridApp.csproj", "{C963C55B-0AC5-4357-989A-08605FAA301C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleHybridWebViewApp", "SampleHybridWebViewApp\SampleHybridWebViewApp.csproj", "{0DF9CAFD-D710-4059-9310-93774615386F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,18 @@ Global
 		{C963C55B-0AC5-4357-989A-08605FAA301C}.Release|x64.Build.0 = Release|Any CPU
 		{C963C55B-0AC5-4357-989A-08605FAA301C}.Release|x86.ActiveCfg = Release|Any CPU
 		{C963C55B-0AC5-4357-989A-08605FAA301C}.Release|x86.Build.0 = Release|Any CPU
+		{0DF9CAFD-D710-4059-9310-93774615386F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DF9CAFD-D710-4059-9310-93774615386F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DF9CAFD-D710-4059-9310-93774615386F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0DF9CAFD-D710-4059-9310-93774615386F}.Debug|x64.Build.0 = Debug|Any CPU
+		{0DF9CAFD-D710-4059-9310-93774615386F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0DF9CAFD-D710-4059-9310-93774615386F}.Debug|x86.Build.0 = Debug|Any CPU
+		{0DF9CAFD-D710-4059-9310-93774615386F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DF9CAFD-D710-4059-9310-93774615386F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DF9CAFD-D710-4059-9310-93774615386F}.Release|x64.ActiveCfg = Release|Any CPU
+		{0DF9CAFD-D710-4059-9310-93774615386F}.Release|x64.Build.0 = Release|Any CPU
+		{0DF9CAFD-D710-4059-9310-93774615386F}.Release|x86.ActiveCfg = Release|Any CPU
+		{0DF9CAFD-D710-4059-9310-93774615386F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
