@@ -23,8 +23,7 @@ Integrating Aspire with your .NET MAUI applications provides several key benefit
 
 ## Platform Support
 
-> [!NOTE]
-> Aspire 13 currently has full support for **Windows** and **Mac Catalyst**. Support for **Android** and **iOS** is coming in a future release.
+Aspire 13 and the Aspire.Hosting.Maui (preview) package has full support for Windows, Mac Catalyst, iOS and Android on physical devices as well as emulators and Simulators.
 
 ## Prerequisites
 
